@@ -1,0 +1,106 @@
+{
+ "VB1RhUVlnNfhclAh4LvR@2024-08-05T00:00:00Z": [
+  {
+   "id": "64F2iabcEZYO",
+   "createdTime": 1722516691449,
+   "probBefore": 0.8098077635619021,
+   "probAfter": 0.8288364348891628,
+   "outcome": "YES",
+   "amount": 132,
+   "isRedemption": false,
+   "isCancelled": false
+  },
+  {
+   "id": "ueeyPzhvCJ3e",
+   "createdTime": 1722505252556,
+   "probBefore": 0.8090178766508609,
+   "probAfter": 0.8098077635619021,
+   "outcome": "YES",
+   "amount": 5,
+   "isRedemption": false,
+   "isCancelled": false
+  },
+  {
+   "id": "4Nc03qb7hPs4",
+   "createdTime": 1722326425288,
+   "probBefore": 0.8085413067673514,
+   "probAfter": 0.8090178766508609,
+   "outcome": "YES",
+   "amount": 3,
+   "isRedemption": false,
+   "isCancelled": false
+  },
+  {
+   "id": "mmaIJ4vz2Gwd",
+   "createdTime": 1722293928003,
+   "probBefore": 0.8077425909690996,
+   "probAfter": 0.8085413067673514,
+   "outcome": "YES",
+   "amount": 5,
+   "isRedemption": false,
+   "isCancelled": false
+  },
+  {
+   "id": "RZhollcpMAqi",
+   "createdTime": 1722281101810,
+   "probBefore": 0.838145034390379,
+   "probAfter": 0.8077425909690996,
+   "outcome": "NO",
+   "amount": 49,
+   "isRedemption": false,
+   "isCancelled": false
+  }
+ ],
+ "gGnxdT90w0mxEPTVwD9S@2024-07-01T00:00:00Z": [
+  {
+   "id": "JaH7Yw2MhA8p",
+   "createdTime": 1719784451942,
+   "probBefore": 0.45792038718450695,
+   "probAfter": 0.45792038718450695,
+   "outcome": "NO",
+   "amount": 0,
+   "isRedemption": false,
+   "isCancelled": true
+  },
+  {
+   "id": "IemAkdoWvPM8",
+   "createdTime": 1719712011224,
+   "probBefore": 0.48000000000000026,
+   "probAfter": 0.45792038718450695,
+   "outcome": "NO",
+   "amount": 50,
+   "isRedemption": false,
+   "isCancelled": false
+  },
+  {
+   "id": "8I0MNvKZKZ2w",
+   "createdTime": 1719700440692,
+   "probBefore": 0.48000000000000026,
+   "probAfter": 0.48000000000000026,
+   "outcome": "YES",
+   "amount": -206.7998056037739,
+   "isRedemption": true,
+   "isCancelled": null
+  },
+  {
+   "id": "9xuh20KcLvA3",
+   "createdTime": 1719700440692,
+   "probBefore": 0.48000000000000026,
+   "probAfter": 0.48000000000000026,
+   "outcome": "NO",
+   "amount": -224.0331227374215,
+   "isRedemption": true,
+   "isCancelled": null
+  },
+  {
+   "id": "585J6WEFBd8s",
+   "createdTime": 1719700440653,
+   "probBefore": 0.38087121503616744,
+   "probAfter": 0.48000000000000026,
+   "outcome": "YES",
+   "amount": 192.32743593951253,
+   "isRedemption": false,
+   "isCancelled": true
+  }
+ ]
+}
