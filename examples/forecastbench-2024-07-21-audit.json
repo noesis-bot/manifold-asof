@@ -1,0 +1,28 @@
+{
+ "markets": 61,
+ "resolved": 36,
+ "close_equals_resolution": 16,
+ "outcomes_close_equals_resolution": {
+  "YES": 7,
+  "NO": 9
+ },
+ "outcomes_rest": {
+  "YES": 4,
+  "NO": 16
+ },
+ "flag_counts": {
+  "RESOLVED_AFTER_CUTOFF": 34,
+  "CURRENT_STATE_FIELDS": 59,
+  "CLOSE_MOVED_EARLIER": 17,
+  "CLOSE_EQUALS_RESOLUTION": 16,
+  "RESOLVED_BEFORE_CUTOFF": 2,
+  "CLOSE_EXTENDED": 2
+ },
+ "cohort": [
+  {
+   "code": "EARLY_RESOLUTION_SUBGROUP",
+   "severity": "info",
+   "detail": "16 of 36 resolved markets resolved before their planned close. Compare outcome shares across the two groups before trusting horizon features."
+  }
+ ]
+}
