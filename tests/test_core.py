@@ -12,6 +12,7 @@ from manifold_asof.cli import _snapshots  # noqa: E402
 FX = ROOT / "tests" / "fixtures"
 MARKETS = {m["id"]: m for m in json.loads((FX / "markets.json").read_text())}
 BETS = json.loads((FX / "bets.json").read_text())
+MULTI = json.loads((FX / "multi.json").read_text())
 
 
 def codes(flags):
@@ -117,3 +118,73 @@ class Parsing(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AsofMultipleChoice(unittest.TestCase):
+    """Recorded real multiple-choice markets (tests/fixtures/multi.json, a few answers kept per market)."""
+
+    def view(self, key, with_bets=True):
+        rec = MULTI[key]
+        return asof(rec["market"], key.split("@")[1], rec["bets"] if with_bets else None)
+
+    def test_sum_to_one_market_before_resolution(self):
+        v = self.view("Z9uy9T4q4rAfq4sGzPA0@2024-08-30T00:00:00Z")
+        self.assertTrue(v["shouldAnswersSumToOne"])
+        self.assertFalse(v["isResolved"])
+        rows = {r["text"]: r for r in v["answers"]}
+        self.assertEqual(set(rows), {"Democratic Party", "Republican Party", "Other"})
+        self.assertTrue(all(r["resolution"] is None for r in rows.values()))  # resolved 2024-11-06, after `at`
+        self.assertAlmostEqual(rows["Democratic Party"]["probability"], 0.5312, places=4)
+        self.assertAlmostEqual(rows["Republican Party"]["probability"], 0.4686, places=4)
+        # each value is as of its own last bet, so the sum is close to but not exactly 1, and we say so
+        self.assertAlmostEqual(v["probability_sum"], 1.0, delta=0.01)
+        self.assertNotEqual(v["probability_sum"], 1.0)
+        self.assertIn("probability_sync", v["unknown"])
+        # closeTime == resolutionTime today, so the close is not reported at `at`
+        self.assertIsNone(v["closeTime"])
+
+    def test_sum_to_one_market_after_resolution(self):
+        rec = MULTI["Z9uy9T4q4rAfq4sGzPA0@2024-08-30T00:00:00Z"]
+        v = asof(rec["market"], "2024-12-01", None)
+        res = {r["text"]: r["resolution"] for r in v["answers"]}
+        self.assertEqual(res, {"Democratic Party": "NO", "Republican Party": "YES", "Other": "NO"})
+        self.assertIn("probability", v["unknown"])
+
+    def test_independent_answers_resolve_one_by_one(self):
+        v = self.view("UU79AmfRkcUW9aVA2jIK@2024-01-10T00:00:00Z")
+        self.assertFalse(v["shouldAnswersSumToOne"])
+        rows = {r["id"]: r for r in v["answers"]}
+        self.assertEqual(rows["6e036a5c16fc"]["resolution"], "YES")   # tech layoffs, resolved 2024-01-03
+        self.assertIsNone(rows["2c034b3145a0"]["resolution"])          # Trump primary win, resolved 2024-01-16
+        self.assertIsNone(rows["7c1d266ea77f"]["resolution"])          # resolved NO on 2024-01-24
+        self.assertAlmostEqual(rows["80176651146a"]["probability"], 0.4071, places=4)
+        self.assertNotIn("probability_sum", v)
+
+    def test_answers_added_after_at_are_dropped(self):
+        v = self.view("UU79AmfRkcUW9aVA2jIK@2024-01-10T00:00:00Z")
+        ids = {r["id"] for r in v["answers"]}
+        self.assertEqual(v["answers_added_after_at"], 2)
+        self.assertFalse(ids & {"9b7c13aa5998", "bb37edb618e5"})
+
+    def test_flat_bet_list_and_missing_bets(self):
+        rec = MULTI["UU79AmfRkcUW9aVA2jIK@2024-01-10T00:00:00Z"]
+        flat = [b for bl in rec["bets"].values() for b in bl if b["answerId"] != "7c1d266ea77f"]
+        flat.sort(key=lambda b: -b["createdTime"])
+        v = asof(rec["market"], "2024-01-10T00:00:00Z", flat)
+        rows = {r["id"]: r for r in v["answers"]}
+        self.assertAlmostEqual(rows["2c034b3145a0"]["probability"], 0.9654, places=4)
+        self.assertIsNone(rows["7c1d266ea77f"]["probability"])
+        self.assertIn("probability_missing", v["unknown"])
+
+    def test_bets_after_at_are_ignored(self):
+        rec = MULTI["UU79AmfRkcUW9aVA2jIK@2024-01-10T00:00:00Z"]
+        v = asof(rec["market"], "2024-01-09T06:00:00Z", rec["bets"])
+        rows = {r["id"]: r for r in v["answers"]}
+        # the three recorded bets on 80176651146a are all from 2024-01-09 18:23 on, after this earlier `at`
+        self.assertIsNone(rows["80176651146a"]["probability"])
+        # 7c1d266ea77f: the 08:42 bet is after `at`, the 00:24 bet counts
+        self.assertAlmostEqual(rows["7c1d266ea77f"]["probability"], 0.0255, places=4)
+        v = asof(rec["market"], "2024-01-09T00:00:00Z", rec["bets"])
+        rows = {r["id"]: r for r in v["answers"]}
+        # only a redemption is left before this `at`; redemptions never count, so the value is unknown, not 0.0259
+        self.assertIsNone(rows["7c1d266ea77f"]["probability"])
