@@ -138,11 +138,13 @@ def prob_from_bets(bets_desc: list[dict]) -> tuple[float | None, int | None]:
     return None, None
 
 
-def asof(m: dict, at, bets_before: list[dict] | None = None) -> dict:
-    """View of a binary market at time `at`, from today's market JSON plus the bets placed before `at`.
+def asof(m: dict, at, bets_before: list[dict] | dict | None = None) -> dict:
+    """View of a binary or multiple-choice market at time `at`, from today's market JSON plus the bets placed before `at`.
 
     What cannot be reconstructed is returned as None with a reason, never guessed.
     bets_before: bets with createdTime < at, newest first (as `/v0/bets?contractId=..&beforeTime=..` returns them).
+    For a multiple-choice market pass a dict {answerId: bets} (one `/v0/bets?...&answerId=..` call per answer), or a flat
+    list of bets that carry `answerId`.
     """
     t = to_ms(at)
     created, c, r = m.get("createdTime"), m.get("closeTime"), m.get("resolutionTime")
@@ -163,9 +165,12 @@ def asof(m: dict, at, bets_before: list[dict] | None = None) -> dict:
         view["closeTime"] = iso(c)
         view["unknown"]["closeTime_edits"] = "the creator may have edited closeTime after `at`; the API keeps no history."
     view["isClosed"] = resolved_at_t or (c is not None and c <= t and not close_is_outcome_dependent(m))
+    if m.get("outcomeType") == "MULTIPLE_CHOICE":
+        view["answers"] = _answers_asof(m, t, bets_before, view)
+        return view
     if m.get("outcomeType") != "BINARY":
         view["probability"] = None
-        view["unknown"]["probability"] = "only binary markets are supported for now."
+        view["unknown"]["probability"] = "only binary and multiple-choice markets are supported for now."
     elif bets_before is None:
         view["probability"] = None
         view["unknown"]["probability"] = "no bets given; pass bets placed before `at`."
@@ -176,3 +181,74 @@ def asof(m: dict, at, bets_before: list[dict] | None = None) -> dict:
         if p is None:
             view["unknown"]["probability"] = "no effective bet before `at` (initial probability not in the public API)."
     return view
+
+
+def _answers_asof(m: dict, t: int, bets_before, view: dict) -> list[dict]:
+    """Per-answer view of a MULTIPLE_CHOICE market at time t (helper for `asof`).
+
+    - Answers created after t are dropped and counted, because they did not exist yet. In a market whose answers sum to
+      one, their share sat in "Other" at t.
+    - Probability per answer: probAfter of the newest bet on *that* answer before t. In a sum-to-one market a bet on one
+      answer also moves the others, but the public API only returns the bet on the answer that was bought, so every
+      answer's value is as of its own last bet. We report the sum and how stale each value is; we do not renormalise.
+    - Resolution per answer only if it happened by t. Independent answers resolve one by one; a sum-to-one market resolves
+      as a whole (contract-level resolution: an answer id, MKT or CANCEL).
+    """
+    answers = m.get("answers") or []
+    sum_to_one = bool(m.get("shouldAnswersSumToOne"))
+    view["shouldAnswersSumToOne"] = sum_to_one
+    by_answer: dict[str, list[dict]] | None
+    if bets_before is None:
+        by_answer = None
+    elif isinstance(bets_before, dict):
+        by_answer = bets_before
+    else:
+        by_answer = {}
+        for b in bets_before:
+            by_answer.setdefault(b.get("answerId"), []).append(b)
+    contract_resolved = view["isResolved"]
+    out, later = [], 0
+    for a in sorted(answers, key=lambda a: a.get("index", 0)):
+        ac = a.get("createdTime")
+        if ac is not None and ac > t:
+            later += 1
+            continue
+        row = {"id": a.get("id"), "text": a.get("text"), "isOther": bool(a.get("isOther"))}
+        if sum_to_one:
+            res = m.get("resolution")
+            if not contract_resolved:
+                row["resolution"] = None
+            elif res in ("MKT", "CHOOSE_MULTIPLE"):
+                row["resolution"] = "MKT"
+                row["resolutionProbability"] = a.get("resolutionProbability")
+            elif res == "CANCEL":
+                row["resolution"] = "CANCEL"
+            else:
+                row["resolution"] = "YES" if res == a.get("id") else "NO"
+        else:
+            ar = a.get("resolutionTime")
+            row["resolution"] = a.get("resolution") if (ar is not None and ar <= t) else None
+        if by_answer is None:
+            row["probability"] = None
+        else:
+            p, when = prob_from_bets([b for b in by_answer.get(a.get("id"), []) if (b.get("createdTime") or 0) < t])
+            row["probability"] = p
+            row["probability_from_bet_at"] = iso(when)
+        out.append(row)
+    view["answers_added_after_at"] = later
+    if later and sum_to_one:
+        view["unknown"]["other_split"] = (f"{later} answer(s) were added after `at`; at `at` their share was inside "
+                                          "\"Other\", so today's answer list is not the one traders saw.")
+    if by_answer is None:
+        view["unknown"]["probability"] = "no bets given; pass bets placed before `at` per answer."
+    else:
+        missing = [r["id"] for r in out if r["probability"] is None]
+        if missing:
+            view["unknown"]["probability_missing"] = (f"{len(missing)} answer(s) without a bet before `at` in the bets "
+                                                      "given (initial probability not in the public API).")
+        if sum_to_one:
+            known = [r["probability"] for r in out if r["probability"] is not None]
+            view["probability_sum"] = round(sum(known), 6) if known else None
+            view["unknown"]["probability_sync"] = ("each answer's probability is as of its own last bet; bets on other "
+                                                   "answers since then moved it too (not exposed by the API). Not renormalised.")
+    return out
