@@ -1,6 +1,7 @@
 """Re-record the test fixtures from the live Manifold API (network). Tests themselves run offline.
 
-  python tests/record_fixtures.py
+  python tests/record_fixtures.py               # all fixtures
+  python tests/record_fixtures.py --only-multi  # only tests/fixtures/multi.json
 """
 import json
 import pathlib
@@ -23,7 +24,38 @@ MARKETS = {
 BETS = {("VB1RhUVlnNfhclAh4LvR", "2024-08-05T00:00:00Z"), ("gGnxdT90w0mxEPTVwD9S", "2024-07-01T00:00:00Z")}
 
 
+# Multiple-choice markets for asof. Only a few answers are kept per market so the fixture stays small.
+MULTI = {
+    ("Z9uy9T4q4rAfq4sGzPA0", "2024-08-30T00:00:00Z"): (None, "answers sum to one, resolved as a whole after `at`"),
+    ("UU79AmfRkcUW9aVA2jIK", "2024-01-10T00:00:00Z"): (
+        ["6e036a5c16fc", "2c034b3145a0", "7c1d266ea77f", "80176651146a", "9b7c13aa5998", "bb37edb618e5"],
+        "independent answers resolved one by one, answers added after `at`"),
+}
+ANSWER_KEEP = ("id", "index", "text", "createdTime", "isOther", "resolution", "resolutionTime", "resolutionProbability",
+               "probability")
+
+
+def record_multi():
+    HERE.mkdir(exist_ok=True)
+    out = {}
+    for (mid, at), (keep, why) in sorted(MULTI.items()):
+        m = client.market(mid)
+        answers = [{k: a.get(k) for k in ANSWER_KEEP} for a in m.get("answers") or [] if keep is None or a["id"] in keep]
+        market = {**{k: m.get(k) for k in KEEP}, "shouldAnswersSumToOne": m.get("shouldAnswersSumToOne"),
+                  "answers": answers, "_why": why}
+        bets = client.answer_bets_before({**m, "answers": answers}, to_ms(at), limit=3)
+        bets = {aid: [{k: b.get(k) for k in ("id", "answerId", "createdTime", "probBefore", "probAfter", "outcome",
+                                             "amount", "isRedemption", "isCancelled")} for b in bl]
+                for aid, bl in bets.items()}
+        out[f"{mid}@{at}"] = {"market": market, "bets": bets}
+    (HERE / "multi.json").write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+    print("recorded", len(out), "multiple-choice markets")
+
+
 def main():
+    if "--only-multi" in sys.argv:
+        return record_multi()
+    record_multi()
     HERE.mkdir(exist_ok=True)
     markets = []
     for mid, why in MARKETS.items():
