@@ -1,0 +1,396 @@
+{
+ "UU79AmfRkcUW9aVA2jIK@2024-01-10T00:00:00Z": {
+  "market": {
+   "id": "UU79AmfRkcUW9aVA2jIK",
+   "question": "🍾What will happen in January 2024? [ADD RESPONSES]",
+   "url": "https://manifold.markets/strutheo/what-will-happen-in-january-2024-ad",
+   "outcomeType": "MULTIPLE_CHOICE",
+   "mechanism": "cpmm-multi-1",
+   "createdTime": 1702571619648,
+   "closeTime": 1706763540000,
+   "resolutionTime": 1706823393790,
+   "isResolved": true,
+   "resolution": "MKT",
+   "probability": null,
+   "volume": 1300444.9440483642,
+   "uniqueBettorCount": 1132,
+   "lastUpdatedTime": 1710384877973,
+   "lastBetTime": 1706763538421,
+   "shouldAnswersSumToOne": false,
+   "answers": [
+    {
+     "id": "80176651146a",
+     "index": 0,
+     "text": "Public Celebrity Sex Scandal",
+     "createdTime": 1702571619648,
+     "isOther": false,
+     "resolution": "YES",
+     "resolutionTime": 1706823393000,
+     "resolutionProbability": 0.99,
+     "probability": 1
+    },
+    {
+     "id": "6e036a5c16fc",
+     "index": 1,
+     "text": "Large Tech company announces layoffs",
+     "createdTime": 1702571619648,
+     "isOther": false,
+     "resolution": "YES",
+     "resolutionTime": 1704321170960,
+     "resolutionProbability": 0.94,
+     "probability": 1
+    },
+    {
+     "id": "7c1d266ea77f",
+     "index": 5,
+     "text": "Trump attends a GOP debate ",
+     "createdTime": 1702571938997,
+     "isOther": false,
+     "resolution": "NO",
+     "resolutionTime": 1706110973321,
+     "resolutionProbability": 0.02,
+     "probability": 0
+    },
+    {
+     "id": "2c034b3145a0",
+     "index": 6,
+     "text": "Trump wins a primary and/or caucus",
+     "createdTime": 1702571939189,
+     "isOther": false,
+     "resolution": "YES",
+     "resolutionTime": 1705375429088,
+     "resolutionProbability": 1,
+     "probability": 1
+    },
+    {
+     "id": "9b7c13aa5998",
+     "index": 223,
+     "text": "Nikki Haley reaches 20% before EOM on 538's primary page",
+     "createdTime": 1706644400025,
+     "isOther": false,
+     "resolution": "NO",
+     "resolutionTime": 1706787191724,
+     "resolutionProbability": 0,
+     "probability": 0
+    },
+    {
+     "id": "bb37edb618e5",
+     "index": 225,
+     "text": "xkcd on the last day of January has at least 3 different characters in the panel (NA if none released)",
+     "createdTime": 1706682864258,
+     "isOther": false,
+     "resolution": "YES",
+     "resolutionTime": 1706716645304,
+     "resolutionProbability": 0.74,
+     "probability": 1
+    }
+   ],
+   "_why": "independent answers resolved one by one, answers added after `at`"
+  },
+  "bets": {
+   "80176651146a": [
+    {
+     "id": "ZqurvD4miGyGCTS5fGx9",
+     "answerId": "80176651146a",
+     "createdTime": 1704844422718,
+     "probBefore": 0.41812074512370506,
+     "probAfter": 0.4070943104442724,
+     "outcome": "NO",
+     "amount": 20,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "WNSbO7gGjoaMAZhc6Jsv",
+     "answerId": "80176651146a",
+     "createdTime": 1704825782439,
+     "probBefore": 0.396277191919144,
+     "probAfter": 0.41812074512370506,
+     "outcome": "NO",
+     "amount": -40.13672491734661,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "knQlKoQIPwlTsFdskTt8",
+     "answerId": "80176651146a",
+     "createdTime": 1704824602214,
+     "probBefore": 0.3881771271179977,
+     "probAfter": 0.39627719191914396,
+     "outcome": "YES",
+     "amount": 10,
+     "isRedemption": false,
+     "isCancelled": false
+    }
+   ],
+   "6e036a5c16fc": [
+    {
+     "id": "ZJzNu2DljOdBN4QeXU1R",
+     "answerId": "6e036a5c16fc",
+     "createdTime": 1704321157846,
+     "probBefore": 0.9431141180056208,
+     "probAfter": 0.9431141180056208,
+     "outcome": "NO",
+     "amount": -6.04211050392207,
+     "isRedemption": true,
+     "isCancelled": null
+    },
+    {
+     "id": "EM2YgJGV3KWWhwFOdePB",
+     "answerId": "6e036a5c16fc",
+     "createdTime": 1704321157846,
+     "probBefore": 0.9431141180056208,
+     "probAfter": 0.9431141180056208,
+     "outcome": "YES",
+     "amount": -100.17247723015025,
+     "isRedemption": true,
+     "isCancelled": null
+    },
+    {
+     "id": "eAsQGQ3uW9v0N8qm1KeS",
+     "answerId": "6e036a5c16fc",
+     "createdTime": 1704321157229,
+     "probBefore": 0.9398230087012617,
+     "probAfter": 0.9431141180056208,
+     "outcome": "YES",
+     "amount": 100,
+     "isRedemption": false,
+     "isCancelled": true
+    }
+   ],
+   "7c1d266ea77f": [
+    {
+     "id": "ooHYXUX0w2Hukl4o111M",
+     "answerId": "7c1d266ea77f",
+     "createdTime": 1704789756187,
+     "probBefore": 0.025516946790896458,
+     "probAfter": 0.02512717109554985,
+     "outcome": "NO",
+     "amount": 10,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "BB8EBNL1QvdO4Lg2PIfs",
+     "answerId": "7c1d266ea77f",
+     "createdTime": 1704759885941,
+     "probBefore": 0.025922282320134396,
+     "probAfter": 0.025516946790896455,
+     "outcome": "NO",
+     "amount": 10,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "8kAeIl7OllAV7CxsAGFy",
+     "answerId": "7c1d266ea77f",
+     "createdTime": 1704599124904,
+     "probBefore": 0.025922282320134386,
+     "probAfter": 0.025922282320134386,
+     "outcome": "YES",
+     "amount": -2.667419981890113,
+     "isRedemption": true,
+     "isCancelled": null
+    }
+   ],
+   "2c034b3145a0": [
+    {
+     "id": "mRoktDCj0KH4nn1fLmZm",
+     "answerId": "2c034b3145a0",
+     "createdTime": 1704788473380,
+     "probBefore": 0.9771189535220893,
+     "probAfter": 0.965391443597301,
+     "outcome": "NO",
+     "amount": 10,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "TAAmKFTkUpkHg9sJEeaM",
+     "answerId": "2c034b3145a0",
+     "createdTime": 1704788060065,
+     "probBefore": 0.9744180855663258,
+     "probAfter": 0.9771189535220893,
+     "outcome": "YES",
+     "amount": 100,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "cm2KulKiIMijImOtnWEo",
+     "answerId": "2c034b3145a0",
+     "createdTime": 1704783771402,
+     "probBefore": 0.9844674611059382,
+     "probAfter": 0.9744180855663258,
+     "outcome": "NO",
+     "amount": 10,
+     "isRedemption": false,
+     "isCancelled": false
+    }
+   ]
+  }
+ },
+ "Z9uy9T4q4rAfq4sGzPA0@2024-08-30T00:00:00Z": {
+  "market": {
+   "id": "Z9uy9T4q4rAfq4sGzPA0",
+   "question": "Which party will win the 2024 US Presidential Election?",
+   "url": "https://manifold.markets/ManifoldPolitics/which-party-will-win-the-2024-us-pr-f4158bf9278a",
+   "outcomeType": "MULTIPLE_CHOICE",
+   "mechanism": "cpmm-multi-1",
+   "createdTime": 1704330174585,
+   "closeTime": 1730927944129,
+   "resolutionTime": 1730927944129,
+   "isResolved": true,
+   "resolution": "2bf0c3888c54",
+   "probability": null,
+   "volume": 4767712.182293922,
+   "uniqueBettorCount": 2504,
+   "lastUpdatedTime": 1739832566841,
+   "lastBetTime": 1730923823205,
+   "shouldAnswersSumToOne": true,
+   "answers": [
+    {
+     "id": "1ba315e92afd",
+     "index": 0,
+     "text": "Democratic Party",
+     "createdTime": 1704330174585,
+     "isOther": false,
+     "resolution": null,
+     "resolutionTime": 1730927944129,
+     "resolutionProbability": 0.009812243066307404,
+     "probability": 0.009812243066307404
+    },
+    {
+     "id": "2bf0c3888c54",
+     "index": 1,
+     "text": "Republican Party",
+     "createdTime": 1704330174585,
+     "isOther": false,
+     "resolution": null,
+     "resolutionTime": 1730927944129,
+     "resolutionProbability": 0.9900355147702358,
+     "probability": 0.9900355147702358
+    },
+    {
+     "id": "25d9922b14b8",
+     "index": 2,
+     "text": "Other",
+     "createdTime": 1704330174585,
+     "isOther": true,
+     "resolution": null,
+     "resolutionTime": 1730927944129,
+     "resolutionProbability": 0.0001484285648240318,
+     "probability": 0.0001484285648240318
+    }
+   ],
+   "_why": "answers sum to one, resolved as a whole after `at`"
+  },
+  "bets": {
+   "1ba315e92afd": [
+    {
+     "id": "P4tJylw20hDh",
+     "answerId": "1ba315e92afd",
+     "createdTime": 1724975433463,
+     "probBefore": 0.5308678232229481,
+     "probAfter": 0.5312226369180273,
+     "outcome": "YES",
+     "amount": 50,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "eD6GymFPazU1",
+     "answerId": "1ba315e92afd",
+     "createdTime": 1724973479504,
+     "probBefore": 0.5308678232229481,
+     "probAfter": 0.5308678232229481,
+     "outcome": "YES",
+     "amount": -0.03453358726581986,
+     "isRedemption": true,
+     "isCancelled": null
+    },
+    {
+     "id": "rERFnJE3g5bA",
+     "answerId": "1ba315e92afd",
+     "createdTime": 1724973479504,
+     "probBefore": 0.5308678232229481,
+     "probAfter": 0.5308678232229481,
+     "outcome": "NO",
+     "amount": -0.030517609576669533,
+     "isRedemption": true,
+     "isCancelled": null
+    }
+   ],
+   "2bf0c3888c54": [
+    {
+     "id": "2XtwcNMAeh5u",
+     "answerId": "2bf0c3888c54",
+     "createdTime": 1724973474113,
+     "probBefore": 0.468634917097478,
+     "probAfter": 0.468634917097478,
+     "outcome": "YES",
+     "amount": 401.6519347673276,
+     "isRedemption": false,
+     "isCancelled": true
+    },
+    {
+     "id": "H8MNIBbVUHCD",
+     "answerId": "2bf0c3888c54",
+     "createdTime": 1724973453338,
+     "probBefore": 0.46863536103930115,
+     "probAfter": 0.46863536103930115,
+     "outcome": "YES",
+     "amount": -0.026914880489011812,
+     "isRedemption": true,
+     "isCancelled": null
+    },
+    {
+     "id": "iLdgIFznsRoN",
+     "answerId": "2bf0c3888c54",
+     "createdTime": 1724973453338,
+     "probBefore": 0.46863536103930115,
+     "probAfter": 0.46863536103930115,
+     "outcome": "NO",
+     "amount": -0.030517577081672125,
+     "isRedemption": true,
+     "isCancelled": null
+    }
+   ],
+   "25d9922b14b8": [
+    {
+     "id": "iYoPJkYpPWxU",
+     "answerId": "25d9922b14b8",
+     "createdTime": 1724957131335,
+     "probBefore": 0.00010488606494911359,
+     "probAfter": 0.0006371256776451234,
+     "outcome": "YES",
+     "amount": 3,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "8xMyfDhVngmx",
+     "answerId": "25d9922b14b8",
+     "createdTime": 1724883297217,
+     "probBefore": 0.0004006434921735862,
+     "probAfter": 0.0006249237396301152,
+     "outcome": "YES",
+     "amount": 1,
+     "isRedemption": false,
+     "isCancelled": false
+    },
+    {
+     "id": "lCF02eck8eua",
+     "answerId": "25d9922b14b8",
+     "createdTime": 1724883287827,
+     "probBefore": 0.00022538058853904187,
+     "probAfter": 0.0004006434921735862,
+     "outcome": "YES",
+     "amount": 1,
+     "isRedemption": false,
+     "isCancelled": false
+    }
+   ]
+  }
+ }
+}
