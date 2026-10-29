@@ -27,7 +27,16 @@ def market(market_id: str) -> dict:
     return _get(f"market/{market_id}")
 
 
-def bets_before(market_id: str, at_ms: int, limit: int = 20) -> list[dict]:
-    """Most recent bets strictly before `at_ms`, newest first."""
-    bets = _get("bets", {"contractId": market_id, "beforeTime": at_ms, "limit": limit, "order": "desc"})
+def bets_before(market_id: str, at_ms: int, limit: int = 20, answer_id: str | None = None) -> list[dict]:
+    """Most recent bets strictly before `at_ms`, newest first (optionally only those on one answer)."""
+    params = {"contractId": market_id, "beforeTime": at_ms, "limit": limit, "order": "desc"}
+    if answer_id:
+        params["answerId"] = answer_id
+    bets = _get("bets", params)
     return [b for b in bets if b.get("createdTime", 0) < at_ms]
+
+
+def answer_bets_before(m: dict, at_ms: int, limit: int = 5) -> dict[str, list[dict]]:
+    """For a multiple-choice market: {answerId: recent bets before at_ms}, one request per answer that existed then."""
+    return {a["id"]: bets_before(m["id"], at_ms, limit, answer_id=a["id"])
+            for a in m.get("answers") or [] if (a.get("createdTime") or 0) <= at_ms}
