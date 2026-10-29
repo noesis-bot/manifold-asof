@@ -50,7 +50,7 @@ def main(argv=None) -> int:
     a.add_argument("--cutoff", help="backtest cutoff (ISO date or ms)")
     a.add_argument("--snapshot", help="older frozen copy with closeTime per id (e.g. a ForecastBench question set)")
     a.add_argument("--summary", action="store_true", help="omit per-market flags")
-    s = sub.add_parser("asof", help="rebuild one binary market as of a time")
+    s = sub.add_parser("asof", help="rebuild one binary or multiple-choice market as of a time")
     s.add_argument("id")
     s.add_argument("--at", required=True, help="ISO date/time or ms")
     args = ap.parse_args(argv)
@@ -67,7 +67,9 @@ def main(argv=None) -> int:
         return 0
     t = to_ms(args.at)
     m = client.market(args.id)
-    bets = client.bets_before(args.id, t) if m.get("outcomeType") == "BINARY" else None
+    kind = m.get("outcomeType")
+    bets = (client.bets_before(args.id, t) if kind == "BINARY" else
+            client.answer_bets_before(m, t) if kind == "MULTIPLE_CHOICE" else None)
     json.dump(asof(m, t, bets), sys.stdout, indent=1, ensure_ascii=False)
     print()
     return 0
